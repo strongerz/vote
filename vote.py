@@ -19,7 +19,7 @@ def getproxy():
     response = requests.get(url)
     html = response.text
     filename = 'origin.txt'
-    with open(filename, 'w') as f:  # 如果filename不存在会自动创建， 'w'表示写数据，写之前会清空文件中的原有数据！
+    with open(filename, 'w') as f:  
         f.write(html)
     f.close()
 
@@ -56,7 +56,7 @@ def getproxy():
     filename = 'unknownalive.txt'
     with open(filename, 'w') as f:
         for x in range(1, count):
-            theline = linecache.getline(r'filtered.txt', x)  # 从文件poem.txt中对读取第a行的数据
+            theline = linecache.getline(r'filtered.txt', x)  
             theline = theline.split("host\"")[1][3:].split("\"")[0] + ":" + theline.split("port\"")[1][2:].split(",")[
                 0] + "\n"
             f.write(theline)
