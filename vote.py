@@ -190,34 +190,41 @@ for a in range(1,100000):   #访问100次
         response_view = requests.post(view_url, proxies=proxies,headers=view_headers,data="limit=1",timeout = 2)   #模拟打开页面
         response_count = requests.get(count_url, proxies=proxies,headers=count_headers ,timeout = 2)    #模拟打开统计页面
         response_vote = requests.post(vote_url, proxies=proxies, headers=vote_headers, data="latitude=0&longitude=0&verify=0",timeout = 2)   #模拟投票
-        response_real = requests.get(real_url, headers=real_headers,timeout = 2)
+        response_real = requests.get(view_url, proxies=proxies,headers=view_headers,timeout = 2)
+        html2 = response_vote.text
+        code = html2.split(",")[0].split(":")[1][1:2]  # 获取返回码，成功为1，失败为0
+        print(theline)
     except:
         continue
     else:
-        try:
-            html1 = response_real.text
-            html2 = response_vote.text
-            page = etree.HTML(html1.lower())
-            if (int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text))<piaoshu:     #如果出现票数减少的情况，记录下时间和减少的数量
-                down_time = datetime.datetime.now()
-                down_count = piaoshu - int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
-            piaoshu = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
-            code = html2.split(",")[0].split(":")[1][1:2]  # 获取返回码，成功为1，失败为0
-            print(theline)
-            # print(cookie)
-            # print(html2)
-            if (code == "1"):  # 如果成功就输出信息，并暂停30秒
+        if (code == "1"):
+            try:
+                html1 = response_real.text
+                page = etree.HTML(html1.lower())
+                if (int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)) < piaoshu:  # 如果出现票数减少的情况，记录下时间和减少的数量
+                    down_time = datetime.datetime.now()
+                    down_count = piaoshu - int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
+                piaoshu = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
                 vote_count += 1
-                print("投票成功！当前票数为%s票，距离上次投票为%s秒"%(piaoshu,(datetime.datetime.now() - vote_time).seconds))
-                print("程序已启动%s秒，一共投了%s票"%(((datetime.datetime.now() - starttime).seconds),vote_count))
-                if (down_count!=0):  #一旦出现票数减少的情况，进行循环提醒
-                    print("异常时间为%s，异常票数为%d" %(down_time, down_count))
+                print("投票成功！当前票数为%s票，距离上次投票为%s秒" % (piaoshu, (datetime.datetime.now() - vote_time).seconds))
+                print("程序已启动%s秒，一共投了%s票" % (((datetime.datetime.now() - starttime).seconds), vote_count))
+                if (down_count != 0):  # 一旦出现票数减少的情况，进行循环提醒
+                    print("异常时间为%s，异常票数为%d" % (down_time, down_count))
                 vote_time = datetime.datetime.now()
                 time.sleep(delay)
-            else:
-                str = html2.split(":")[2].split("\"")[1]
-                print("投票失败！%s"%str.encode('utf-8').decode('unicode_escape'))
-        except:
-            print("%s无法读取当前票数！" %(datetime.datetime.now()))
-            time.sleep(delay)
-            continue
+            except:
+                vote_count += 1
+                print("投票成功！无法读取当前票数，距离上次投票为%s秒" %(datetime.datetime.now() - vote_time).seconds)
+                print("程序已启动%s秒，一共投了%s票" % (((datetime.datetime.now() - starttime).seconds), vote_count))
+                vote_time = datetime.datetime.now()
+                #print("%s无法读取当前票数！" % (datetime.datetime.now()))
+                time.sleep(delay)
+                continue
+        else:
+            #str = html2.split(":")[2].split("\"")[1]
+            #print("投票失败！%s" % str.encode('utf-8').decode('unicode_escape'))
+            print("投票失败！")
+
+
+
+
