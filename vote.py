@@ -104,7 +104,7 @@ thefile.close()
 view_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=view&m=tyzm_diamondvote" %id
 count_url = "http://100.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=Count&m=tyzm_diamondvote" %id
 vote_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=vote&m=tyzm_diamondvote" %id
-real_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=view&m=tyzm_diamondvote&wxref=mp.weixin.qq.com" %id
+real_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=view&m=tyzm_diamondvote" %id
 
 vote_count = 0
 ua = ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 MicroMessenger/6.5.18 NetType/WIFI Language/en",\
@@ -192,8 +192,8 @@ for a in range(9999999):   #无限循环
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Connection': 'keep-alive',
         'Upgrade-Insecure-Requests': '1',
-        'Cookie': 'PHPSESSID=e1a9913bdc2d91f667d42cda9355ba58; Hm_lpvt_08c6f5e17c0761a968c5658ccf6ff5ad=1530853117; Hm_lvt_08c6f5e17c0761a968c5658ccf6ff5ad=1530775771,1530789720,1530833997,1530853117',
-        'User-Agent': useragent,
+        'Cookie': 'Hm_lpvt_08c6f5e17c0761a968c5658ccf6ff5ad=1530891725; Hm_lvt_08c6f5e17c0761a968c5658ccf6ff5ad=1530789720,1530833997,1530853117,1530891687; PHPSESSID=60a8ce8ccc41a2c988f84901ad457c2c',
+        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15F79 MicroMessenger/6.7.0 NetType/WIFI Language/zh_CN',
         'Accept-Language': 'zh-cn',
         'Accept-Encoding': 'gzip, deflate',
         'Connection': 'keep-alive'
