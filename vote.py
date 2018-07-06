@@ -7,14 +7,14 @@ from lxml import etree
 #import sys
 #print(sys.path.append(requests))
 
-def get():
+def getsessionid():
     list = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
     str = ""
     for i in range(32):
         a = random.randrange(0, 16)
         str = str + "".join(list[a])
     return (str)
-def getproxy():
+def getproxy_github():
     url = "https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list"
     response = requests.get(url)
     html = response.text
@@ -56,7 +56,8 @@ def getproxy():
     filename = 'unknownalive.txt'
     with open(filename, 'w') as f:
         for x in range(1, count):
-            theline = linecache.getline(r'filtered.txt', x)  
+            theline = linecache.getline(r'filtered.txt', x)
+            theline = theline.split("}")[0]
             theline = theline.split("host\"")[1][3:].split("\"")[0] + ":" + theline.split("port\"")[1][2:].split(",")[0] + "\n"
             f.write(theline)
 
@@ -68,7 +69,7 @@ def getproxy():
             theline1 = r"http://" + theline[:len(theline) - 1]
             proxies = {"http": theline1, "https": theline}
             try:
-                response = requests.get(url, proxies=proxies, timeout=2)
+                response = requests.get(url, proxies=proxies, timeout=5)
             except:
                 continue
             else:
@@ -79,15 +80,17 @@ def getproxy():
 
 id = input("请输入投票id：")
 delay = int(input("请输入投票间隔(推荐大于30秒)："))
+auto = input("是否需要自动获取代理：(y/n)")
 print("=====系统正在初始化，%d秒后自动开始====="%delay)
 starttime = datetime.datetime.now()
 vote_time = datetime.datetime.now()
-getproxy()
+#getproxy_github()
 time.sleep(delay)
 
 piaoshu = 0
 down_count = 0
 down_time = ""
+
 count=0
 thefile=open("alive.txt")
 while True:
@@ -123,13 +126,21 @@ ua = ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.
       "Mozilla/5.0 (Linux; Android 7.0; WAS-AL00 Build/HUAWEIWAS-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043508 Safari/537.36 MicroMessenger/6.5.13.1100 NetType/WIFI Language/zh_CN"]
 
 
-for a in range(1,9999999):   #无限循环
-    if (a%1000==0):
-        getproxy()
+for a in range(9999999):   #无限循环
+    if (a%1000==0 and auto=="y"):
+        getproxy_github()
+        count = 0
+        thefile = open("alive.txt")
+        while True:
+            buffer = thefile.read(1024 * 8192)
+            if not buffer:
+                break
+            count += buffer.count('\n')
+        thefile.close()
     x = random.randrange(1, count-1)
     theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
     theline = r"http://" + theline[:len(theline)-1]
-    randomc = get()   #随机生成session id
+    randomc = getsessionid()   #随机生成session id
 #print(theline[:len(theline)-1])
     proxies = { "http": theline,"https": "https://127.0.0.1:3128"}
     cookie = "PHPSESSID=" + randomc + "; Hm_lpvt_" + randomc + "=1528786299; Hm_lvt_" + randomc + "=1528517742,1528726549,1528731505,1528765187"
