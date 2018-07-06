@@ -79,16 +79,16 @@ def getproxy():
                     f.write(theline)
 
 id = input("请输入投票id：")
-delay = int(input("请输入投票间隔（秒）："))
+delay = int(input("请输入投票间隔(推荐大于55秒)："))
 print("=====系统正在初始化，%d秒后自动开始====="%delay)
+starttime = datetime.datetime.now()
+vote_time = datetime.datetime.now()
 getproxy()
 time.sleep(delay)
 
 piaoshu = 0
 down_count = 0
 down_time = ""
-starttime = datetime.datetime.now()
-vote_time = datetime.datetime.now()
 count=0
 thefile=open("alive.txt")
 while True:
@@ -102,7 +102,7 @@ thefile.close()
 view_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=view&m=tyzm_diamondvote" %id
 count_url = "http://100.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=Count&m=tyzm_diamondvote" %id
 vote_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=vote&m=tyzm_diamondvote" %id
-real_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=view&m=tyzm_diamondvote" %id
+real_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=view&m=tyzm_diamondvote&wxref=mp.weixin.qq.com" %id
 
 vote_count = 0
 ua = ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 MicroMessenger/6.5.18 NetType/WIFI Language/en",\
@@ -124,7 +124,9 @@ ua = ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.
       "Mozilla/5.0 (Linux; Android 7.0; WAS-AL00 Build/HUAWEIWAS-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043508 Safari/537.36 MicroMessenger/6.5.13.1100 NetType/WIFI Language/zh_CN"]
 
 
-for a in range(1,100000):   #访问100次
+for a in range(1,9999999):   #无限循环
+    if (a%2000==0):
+        getproxy()
     x = random.randrange(1, count-1)
     theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
     theline = r"http://" + theline[:len(theline)-1]
@@ -180,7 +182,7 @@ for a in range(1,100000):   #访问100次
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
         'Connection': 'keep-alive',
         'Upgrade-Insecure-Requests': '1',
-        'Cookie': 'PHPSESSID=005b5d666831a546ae2712ca463cc97d; Hm_lvt_08c6f5e17c0761a968c5658ccf6ff5ad=1529534157,1529629098,1529661190,1529684474',
+        'Cookie': 'PHPSESSID=e1a9913bdc2d91f667d42cda9355ba58; Hm_lpvt_08c6f5e17c0761a968c5658ccf6ff5ad=1530853117; Hm_lvt_08c6f5e17c0761a968c5658ccf6ff5ad=1530775771,1530789720,1530833997,1530853117',
         'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15F79 MicroMessenger/6.6.7 NetType/WIFI Language/zh_CN',
         'Accept-Language': 'zh-cn',
         'Accept-Encoding': 'gzip, deflate',
@@ -190,7 +192,7 @@ for a in range(1,100000):   #访问100次
         response_view = requests.post(view_url, proxies=proxies,headers=view_headers,data="limit=1",timeout = 2)   #模拟打开页面
         response_count = requests.get(count_url, proxies=proxies,headers=count_headers ,timeout = 2)    #模拟打开统计页面
         response_vote = requests.post(vote_url, proxies=proxies, headers=vote_headers, data="latitude=0&longitude=0&verify=0",timeout = 2)   #模拟投票
-        response_real = requests.get(view_url, proxies=proxies,headers=view_headers,timeout = 2)
+        response_real = requests.get(real_url, headers=real_headers, timeout=2)
         html2 = response_vote.text
         code = html2.split(",")[0].split(":")[1][1:2]  # 获取返回码，成功为1，失败为0
         print(theline)
@@ -206,24 +208,26 @@ for a in range(1,100000):   #访问100次
                     down_count = piaoshu - int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
                 piaoshu = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
                 vote_count += 1
-                print("投票成功！当前票数为%s票，距离上次投票为%s秒" % (piaoshu, (datetime.datetime.now() - vote_time).seconds))
-                print("程序已启动%s秒，一共投了%s票" % (((datetime.datetime.now() - starttime).seconds), vote_count))
+                print("投票成功！当前票数为%s票，距离上次投票为%s秒，一共投了%s票" % (piaoshu, (datetime.datetime.now() - vote_time).seconds,vote_count))
+                print("程序启动时间为%s,当前时间为%s" %(starttime.strftime('%Y-%m-%d %H:%M:%S'),datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
                 if (down_count != 0):  # 一旦出现票数减少的情况，进行循环提醒
                     print("异常时间为%s，异常票数为%d" % (down_time, down_count))
                 vote_time = datetime.datetime.now()
                 time.sleep(delay)
             except:
                 vote_count += 1
-                print("投票成功！无法读取当前票数，距离上次投票为%s秒" %(datetime.datetime.now() - vote_time).seconds)
-                print("程序已启动%s秒，一共投了%s票" % (((datetime.datetime.now() - starttime).seconds), vote_count))
+                print("投票成功！但无法读取当前票数，距离上次投票为%s秒，一共投了%s票" %(datetime.datetime.now() - vote_time).seconds,vote_count)
+                print("程序启动时间为%s,当前时间为%s" %(starttime.strftime('%Y-%m-%d %H:%M:%S'),datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
                 vote_time = datetime.datetime.now()
                 #print("%s无法读取当前票数！" % (datetime.datetime.now()))
                 time.sleep(delay)
                 continue
         else:
-            #str = html2.split(":")[2].split("\"")[1]
-            #print("投票失败！%s" % str.encode('utf-8').decode('unicode_escape'))
-            print("投票失败！")
+            try:
+                str = html2.split(":")[2].split("\"")[1]
+                print("投票失败！%s" % str.encode('utf-8').decode('unicode_escape'))
+            except:
+                print("投票失败！")
 
 
 
