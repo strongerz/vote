@@ -57,8 +57,7 @@ def getproxy():
     with open(filename, 'w') as f:
         for x in range(1, count):
             theline = linecache.getline(r'filtered.txt', x)  
-            theline = theline.split("host\"")[1][3:].split("\"")[0] + ":" + theline.split("port\"")[1][2:].split(",")[
-                0] + "\n"
+            theline = theline.split("host\"")[1][3:].split("\"")[0] + ":" + theline.split("port\"")[1][2:].split(",")[0] + "\n"
             f.write(theline)
 
     filename = 'alive.txt'
@@ -79,7 +78,7 @@ def getproxy():
                     f.write(theline)
 
 id = input("请输入投票id：")
-delay = int(input("请输入投票间隔(推荐大于55秒)："))
+delay = int(input("请输入投票间隔(推荐大于30秒)："))
 print("=====系统正在初始化，%d秒后自动开始====="%delay)
 starttime = datetime.datetime.now()
 vote_time = datetime.datetime.now()
@@ -125,7 +124,7 @@ ua = ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.
 
 
 for a in range(1,9999999):   #无限循环
-    if (a%2000==0):
+    if (a%1000==0):
         getproxy()
     x = random.randrange(1, count-1)
     theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
@@ -183,16 +182,16 @@ for a in range(1,9999999):   #无限循环
         'Connection': 'keep-alive',
         'Upgrade-Insecure-Requests': '1',
         'Cookie': 'PHPSESSID=e1a9913bdc2d91f667d42cda9355ba58; Hm_lpvt_08c6f5e17c0761a968c5658ccf6ff5ad=1530853117; Hm_lvt_08c6f5e17c0761a968c5658ccf6ff5ad=1530775771,1530789720,1530833997,1530853117',
-        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 11_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15F79 MicroMessenger/6.6.7 NetType/WIFI Language/zh_CN',
+        'User-Agent': useragent,
         'Accept-Language': 'zh-cn',
         'Accept-Encoding': 'gzip, deflate',
         'Connection': 'keep-alive'
     }
     try:
         response_view = requests.post(view_url, proxies=proxies,headers=view_headers,data="limit=1",timeout = 2)   #模拟打开页面
+        response_real = requests.get(real_url, proxies=proxies,headers=real_headers, timeout=2)
         response_count = requests.get(count_url, proxies=proxies,headers=count_headers ,timeout = 2)    #模拟打开统计页面
         response_vote = requests.post(vote_url, proxies=proxies, headers=vote_headers, data="latitude=0&longitude=0&verify=0",timeout = 2)   #模拟投票
-        response_real = requests.get(real_url, headers=real_headers, timeout=2)
         html2 = response_vote.text
         code = html2.split(",")[0].split(":")[1][1:2]  # 获取返回码，成功为1，失败为0
         print(theline)
@@ -208,7 +207,7 @@ for a in range(1,9999999):   #无限循环
                     down_count = piaoshu - int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
                 piaoshu = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
                 vote_count += 1
-                print("投票成功！当前票数为%s票，距离上次投票为%s秒，一共投了%s票" % (piaoshu, (datetime.datetime.now() - vote_time).seconds,vote_count))
+                print("%s投票成功！一共投了%s票，当前票数为%s，距上次投票为%s秒，%s秒后再投" % (id,vote_count,piaoshu,(datetime.datetime.now() - vote_time).seconds,delay))
                 print("程序启动时间为%s,当前时间为%s" %(starttime.strftime('%Y-%m-%d %H:%M:%S'),datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
                 if (down_count != 0):  # 一旦出现票数减少的情况，进行循环提醒
                     print("异常时间为%s，异常票数为%d" % (down_time, down_count))
@@ -216,7 +215,7 @@ for a in range(1,9999999):   #无限循环
                 time.sleep(delay)
             except:
                 vote_count += 1
-                print("投票成功！但无法读取当前票数，距离上次投票为%s秒，一共投了%s票" %(datetime.datetime.now() - vote_time).seconds,vote_count)
+                print("%s投票成功！一共投了%s票，但无法读取当前票数，距上次投票为%s秒，%s秒后再投" % (id, vote_count, (datetime.datetime.now() - vote_time).seconds, delay))
                 print("程序启动时间为%s,当前时间为%s" %(starttime.strftime('%Y-%m-%d %H:%M:%S'),datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
                 vote_time = datetime.datetime.now()
                 #print("%s无法读取当前票数！" % (datetime.datetime.now()))
