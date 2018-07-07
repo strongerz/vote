@@ -229,6 +229,7 @@ for a in range(9999999):   #无限循环
                     print("异常时间为%s，异常票数为%d" % (down_time, down_count))
                 vote_time = datetime.datetime.now()
                 time.sleep(delay)
+                continue
             except:
                 vote_count += 1
                 print("%s投票成功！一共投了%s票，但无法读取当前票数，距上次投票为%s秒，%s秒后再投" % (id, vote_count, (datetime.datetime.now() - vote_time).seconds, delay))
@@ -241,8 +242,10 @@ for a in range(9999999):   #无限循环
             try:
                 str = html2.split(":")[2].split("\"")[1]
                 print("投票失败！%s" % str.encode('utf-8').decode('unicode_escape'))
+                continue
             except:
                 print("投票失败！")
+                continue
 
 
 
