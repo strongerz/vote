@@ -79,8 +79,8 @@ def getproxy_github():
                     f.write(theline)
 
 id = input("请输入投票id：")
-delay = int(input("请输入投票间隔(推荐大于30秒)："))
-auto = input("是否需要自动获取代理：(y/n)")
+delay = int(input("请输入投票间隔(推荐29秒)："))
+auto = input("是否需要自动获取代理(y/n)：")
 print("=====系统正在初始化，%d秒后自动开始====="%delay)
 starttime = datetime.datetime.now()
 vote_time = datetime.datetime.now()
