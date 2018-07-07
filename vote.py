@@ -80,11 +80,11 @@ def getproxy_github():
 
 id = input("请输入投票id：")
 delay = int(input("请输入投票间隔(推荐大于30秒)："))
-auto = input("是否需要自动获取代理：(y/n)")
+#auto = input("是否需要自动获取代理：(y/n)")
 print("=====系统正在初始化，%d秒后自动开始====="%delay)
 starttime = datetime.datetime.now()
 vote_time = datetime.datetime.now()
-#getproxy_github()
+getproxy_github()
 time.sleep(delay)
 
 piaoshu = 0
@@ -127,7 +127,7 @@ ua = ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.
 
 
 for a in range(9999999):   #无限循环
-    if (a%1000==0 and auto=="y"):
+    '''if (a%1000==0 and auto=="y"):
         getproxy_github()
         count = 0
         thefile = open("alive.txt")
@@ -136,7 +136,7 @@ for a in range(9999999):   #无限循环
             if not buffer:
                 break
             count += buffer.count('\n')
-        thefile.close()
+        thefile.close()'''
     x = random.randrange(1, count-1)
     theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
     theline = r"http://" + theline[:len(theline)-1]
