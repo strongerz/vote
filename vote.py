@@ -138,11 +138,11 @@ for a in range(9999999):   #无限循环
                 break
             count += buffer.count('\n')
         thefile.close()'''
-    #x = random.randrange(1, count-1)http://www.66ip.cn/mo.php?sxb=&tqsl=100&port=&export=&ktip=&sxa=&submit=%CC%E1++%C8%A1&textarea=
-    #theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
+    x = random.randrange(1, count-1)
+    theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
 
-    x = a%(count-1)
-    theline = linecache.getline(r'alive.txt', x)       #从代理ip池中按序挑选一个
+    #x = a%(count-1)
+    #theline = linecache.getline(r'alive.txt', x)       #从代理ip池中按序挑选一个
 
     theline = r"http://" + theline[:len(theline)-1]
     randomc = getsessionid()   #随机生成session id
