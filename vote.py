@@ -247,7 +247,3 @@ for a in range(9999999):   #无限循环
             except:
                 print("投票失败！")
                 continue
-
-
-
-
