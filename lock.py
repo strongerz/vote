@@ -68,7 +68,7 @@ for xxx in range(9999999):
         except:
             continue
 
-    if (piaoshu2 - piaoshu1 > 5):
+    if (piaoshu2 - piaoshu1 > 2):
         for a in range(9999999):  # 无限循环
             x = a % (count - 1)
             theline = linecache.getline(r'lock.txt', x)  # 从代理ip池中按序挑选一个
@@ -114,6 +114,6 @@ for xxx in range(9999999):
                         print("投票失败！")
                         continue
     else:
-        print("%s当前没有刷票行为，5分钟后再检测，当前时间为%s" % (id, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+        print("%s票数为%d，没有检测到刷票，当前时间为%s" % (id, piaoshu2,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
 
