@@ -4,6 +4,7 @@ import random
 import time
 import datetime
 from lxml import etree
+import re
 
 id = input("请输入锁定id(749)：")
 delay = 1
@@ -26,7 +27,7 @@ thefile.close()
 vote_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=vote&m=tyzm_diamondvote" %id
 real_url = "http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=view&m=tyzm_diamondvote" %id
 useragent = 'Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.3.8 (KHTML, like Gecko) Mobile/14G60 wxwork/2.1.5 MicroMessenger/6.3.22'
-cookie = "PHPSESSID=2773c81c10766cb0b977be50b585cb39" + "; Hm_lpvt_2773c81c10766cb0b977be50b585cb39" + "=1528786299; Hm_lvt_2773c81c10766cb0b977be50b585cb39" + "=1528517742,1528726549,1528731505,1528765187"
+cookie = "PHPSESSID=2773c81c10766cb0b977be50b585cb39; Hm_lpvt_2773c81c10766cb0b977be50b585cb39=1528786299; Hm_lvt_2773c81c10766cb0b977be50b585cb39=1528517742,1528726549,1528731505,1528765187"
 
 real_headers = {
     'Host': '101.chinalife-pension.com.cn',
@@ -50,7 +51,8 @@ for xxx in range(9999999):
             html1 = response_real.text
             page = etree.HTML(html1.lower())
             piaoshu1 = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
-            print("%s第%d轮第一次检测票数为%d，当前时间为%s"%(id,xxx,piaoshu1,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+            giftcount1 = re.sub("\D", "", page.xpath("/html/body/div[1]/div[5]/div[4]/span[2]")[0].text)
+            print("%s第%d轮第一次检测票数为%d，礼物积分为%s，当前时间为%s"%(id,xxx+1,piaoshu1,giftcount1,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
             time.sleep(180)
             break
         except:
@@ -65,12 +67,13 @@ for xxx in range(9999999):
             html1 = response_real.text
             page = etree.HTML(html1.lower())
             piaoshu2 = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
-            print("%s第%d轮第二次检测票数为%d，当前时间为%s" % (id, xxx, piaoshu2, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+            giftcount2 = re.sub("\D", "", page.xpath("/html/body/div[1]/div[5]/div[4]/span[2]")[0].text)
+            print("%s第%d轮第二次检测票数为%d，礼物积分为%s，当前时间为%s"%(id,xxx+1,piaoshu2,giftcount2,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
             break
         except:
             continue
 
-    if (piaoshu2 - piaoshu1 > 1):
+    if ((piaoshu2 - piaoshu1 > 1) and (int(giftcount2) - int(giftcount1) < 1)):
         for c in range(9999999):  # 无限循环
             x = c % (count - 1)
             theline = linecache.getline(r'lock.txt', x)  # 从代理ip池中按序挑选一个
