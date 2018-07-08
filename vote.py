@@ -157,7 +157,7 @@ for a in range(9999999):   #无限循环
         'Origin': 'http://101.chinalife-pension.com.cn',
         'Proxy-Connection': 'keep-alive',
         'Accept-Language': 'zh-cn',
-        'Referer': 'http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=1000&do=view&m=tyzm_diamondvote&wxref=mp.weixin.qq.com',
+        'Referer': 'http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=view&m=tyzm_diamondvote&wxref=mp.weixin.qq.com'%id,
         'Accept-Encoding': 'gzip, deflate',
         'Content-Length': '7',
         'User-Agent': useragent,
