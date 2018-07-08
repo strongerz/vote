@@ -157,7 +157,7 @@ for a in range(9999999):   #无限循环
         'Origin': 'http://101.chinalife-pension.com.cn',
         'Proxy-Connection': 'keep-alive',
         'Accept-Language': 'zh-cn',
-        'Referer': 'http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=%s&do=view&m=tyzm_diamondvote&wxref=mp.weixin.qq.com'%id,
+        'Referer': 'http://101.chinalife-pension.com.cn/app/index.php?i=2&c=entry&rid=14&id=1000&do=view&m=tyzm_diamondvote&wxref=mp.weixin.qq.com',
         'Accept-Encoding': 'gzip, deflate',
         'Content-Length': '7',
         'User-Agent': useragent,
@@ -226,7 +226,8 @@ for a in range(9999999):   #无限循环
                 print("%s投票成功！一共投了%s票，当前票数为%s，距上次投票为%s秒，%s秒后再投" % (id,vote_count,piaoshu,(datetime.datetime.now() - vote_time).seconds,delay))
                 print("程序启动时间为%s,当前时间为%s" %(starttime.strftime('%Y-%m-%d %H:%M:%S'),datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
                 if (down_count != 0):  # 一旦出现票数减少的情况，进行循环提醒
-                    print("异常时间为%s，异常票数为%d" % (down_time, down_count))
+                    print("异常时间为%s，异常票数为%d!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" % (down_time, down_count))
+                    down_count=0
                 vote_time = datetime.datetime.now()
                 time.sleep(delay)
                 continue

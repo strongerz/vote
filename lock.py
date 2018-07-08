@@ -50,12 +50,13 @@ for xxx in range(9999999):
             html1 = response_real.text
             page = etree.HTML(html1.lower())
             piaoshu1 = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
-            time.sleep(300)
+            print("%s第%d轮第一次检测票数为%d，当前时间为%s"%(id,xxx,piaoshu1,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+            time.sleep(180)
             break
         except:
             continue
     for b in range(99999):
-        x = a % (count - 1)
+        x = b % (count - 1)
         theline = linecache.getline(r'lock.txt', x)  # 从代理ip池中按序挑选一个
         theline = r"http://" + theline[:len(theline) - 1]
         proxies = {"http": theline, "https": "https://127.0.0.1:3128"}
@@ -64,13 +65,14 @@ for xxx in range(9999999):
             html1 = response_real.text
             page = etree.HTML(html1.lower())
             piaoshu2 = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
+            print("%s第%d轮第二次检测票数为%d，当前时间为%s" % (id, xxx, piaoshu2, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
             break
         except:
             continue
 
-    if (piaoshu2 - piaoshu1 > 2):
-        for a in range(9999999):  # 无限循环
-            x = a % (count - 1)
+    if (piaoshu2 - piaoshu1 > 1):
+        for c in range(9999999):  # 无限循环
+            x = c % (count - 1)
             theline = linecache.getline(r'lock.txt', x)  # 从代理ip池中按序挑选一个
             theline = r"http://" + theline[:len(theline) - 1]
             proxies = {"http": theline, "https": "https://127.0.0.1:3128"}
@@ -100,20 +102,15 @@ for xxx in range(9999999):
                 if (code == "1"):
                     vote_count += 1
                     print("%s投票成功！一共投了%s票" % (id, vote_count))
-                    print("程序启动时间为%s,当前时间为%s" % (starttime.strftime('%Y-%m-%d %H:%M:%S'), datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
                     continue
                 else:
                     try:
                         str = html2.split(":")[2].split("\"")[1]
                         if ("锁定" in str.encode('utf-8').decode('unicode_escape')):
-                            print("！！！！！！%s刷票已被锁定，当前时间为%s" % (id, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+                            print("%s刷票已被锁定，当前时间为%s，!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" % (id, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
                             break
                         else:
                             continue
                     except:
                         print("投票失败！")
                         continue
-    else:
-        print("%s票数为%d，没有检测到刷票，当前时间为%s" % (id, piaoshu2,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
-
-
