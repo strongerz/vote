@@ -40,7 +40,7 @@ for a in range(999999):
     votecount1=votecount2
     id = []
     votecount2 = []
-    time.sleep(30)
+    time.sleep(3600)
 
 
 
