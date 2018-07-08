@@ -22,6 +22,9 @@ rank_headers = {
     'Content-Length': '7',
     'Cookie': 'PHPSESSID=a52be5a3095b3ddb29c88c4a4e88b24d; Hm_lpvt_08c6f5e17c0761a968c5658ccf6ff5ad=1531046739; Hm_lvt_08c6f5e17c0761a968c5658ccf6ff5ad=1530972177,1531005903,1531008783,1531045193'
 }
+id = []
+votecount1 = ['37931', '33339', '32214', '29514', '26238', '25449', '23626', '23081', '21192', '19071']
+votecount2 = []
 for a in range(999999):
     try:
         response_rank = requests.post(rank_url, headers=rank_headers, data="limit=1", timeout=2)  # 模拟投票
@@ -30,10 +33,15 @@ for a in range(999999):
     except:
         continue
     for i in range(1, 11):
-        id = html.split("\"id\"")[i].split("\"")[1]
-        votecount = html.split("\"id\"")[i].split("\"votenum\"")[1].split("\"")[1]
-        print("第%d名ID为%s，票数为%s" % (i, id, votecount))
-    time.sleep(3600)
+        id.append(html.split("\"id\"")[i].split("\"")[1])
+        votecount2.append(html.split("\"id\"")[i].split("\"votenum\"")[1].split("\"")[1])
+    for k in range(10):
+        print("第%d名ID为%s，票数为%s，增幅为%d" % (k+1, id[k], votecount2[k],int(votecount2[k])-int(votecount1[k])))
+    votecount1=votecount2
+    id = []
+    votecount2 = []
+    time.sleep(30)
+
 
 
 
