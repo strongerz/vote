@@ -31,7 +31,7 @@ for a in range(999999):
     try:
         response_rank = requests.post(rank_url, headers=rank_headers, data="limit=1", timeout=2)  # 模拟投票
         html = response_rank.text
-        print("=============%s=============" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+        print("==========================%s==========================" % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     except:
         continue
     for i in range(1, 11):
