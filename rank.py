@@ -45,7 +45,7 @@ for a in range(999999):
     id = []
     votecount2 = []
     giftcount2 = []
-    time.sleep(3600)
+    time.sleep(600)
 
 
 

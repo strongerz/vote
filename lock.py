@@ -6,7 +6,7 @@ import datetime
 from lxml import etree
 import re
 
-id = input("请输入锁定id(749)：")
+id = input("请输入锁定id：")
 delay = 1
 starttime = datetime.datetime.now()
 vote_time = datetime.datetime.now()
