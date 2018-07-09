@@ -128,21 +128,18 @@ ua = ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.
 
 
 for a in range(9999999):   #无限循环
-    '''if (a%1000==0 and auto=="y"):
-        getproxy_github()
-        count = 0
-        thefile = open("alive.txt")
-        while True:
-            buffer = thefile.read(1024 * 8192)
-            if not buffer:
-                break
-            count += buffer.count('\n')
-        thefile.close()'''
-    x = random.randrange(1, count-1)
-    theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
+    thefile = open("alive.txt")    #注意！！！！！！！！alive.txt末尾不能用空行
+    while True:
+        buffer = thefile.read(1024 * 8192)
+        if not buffer:
+            break
+        count += buffer.count('\n')
+    thefile.close()
+    #x = random.randrange(1, count-1)
+    #theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
 
-    #x = a%(count-1)
-    #theline = linecache.getline(r'alive.txt', x)       #从代理ip池中按序挑选一个
+    x = a%(count+1)
+    theline = linecache.getline(r'alive.txt', x+1)       #从代理ip池中按序挑选一个
 
     theline = r"http://" + theline[:len(theline)-1]
     randomc = getsessionid()   #随机生成session id
@@ -203,7 +200,6 @@ for a in range(9999999):   #无限循环
         'Accept-Encoding': 'gzip, deflate',
         'Connection': 'keep-alive'
     }
-    print(theline)
     try:
         response_view = requests.post(view_url, proxies=proxies,headers=view_headers,data="limit=1",timeout = 2)   #模拟打开页面
         response_real = requests.get(real_url, proxies=proxies,headers=real_headers, timeout=2)
@@ -211,6 +207,7 @@ for a in range(9999999):   #无限循环
         response_vote = requests.post(vote_url, proxies=proxies, headers=vote_headers, data="latitude=0&longitude=0&verify=0",timeout = 2)   #模拟投票
         html2 = response_vote.text
         code = html2.split(",")[0].split(":")[1][1:2]  # 获取返回码，成功为1，失败为0
+        print(theline)
     except:
         continue
     else:

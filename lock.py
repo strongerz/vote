@@ -42,12 +42,12 @@ real_headers = {
 }
 for xxx in range(9999999):
     for a in range(99999):
-        x = a % (count - 1)
-        theline = linecache.getline(r'lock.txt', x)  # 从代理ip池中按序挑选一个
+        x = a % (count+1)
+        theline = linecache.getline(r'lock.txt', x+1)  # 从代理ip池中按序挑选一个
         theline = r"http://" + theline[:len(theline) - 1]
         proxies = {"http": theline, "https": "https://127.0.0.1:3128"}
         try:
-            response_real = requests.get(real_url, proxies=proxies, headers=real_headers, timeout=2)
+            response_real = requests.get(real_url, headers=real_headers, timeout=2)
             html1 = response_real.text
             page = etree.HTML(html1.lower())
             piaoshu1 = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
@@ -58,12 +58,12 @@ for xxx in range(9999999):
         except:
             continue
     for b in range(99999):
-        x = b % (count - 1)
-        theline = linecache.getline(r'lock.txt', x)  # 从代理ip池中按序挑选一个
+        x = b % (count+1)
+        theline = linecache.getline(r'lock.txt', x+1)  # 从代理ip池中按序挑选一个
         theline = r"http://" + theline[:len(theline) - 1]
         proxies = {"http": theline, "https": "https://127.0.0.1:3128"}
         try:
-            response_real = requests.get(real_url, proxies=proxies, headers=real_headers, timeout=2)
+            response_real = requests.get(real_url, headers=real_headers, timeout=2)
             html1 = response_real.text
             page = etree.HTML(html1.lower())
             piaoshu2 = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
@@ -74,9 +74,16 @@ for xxx in range(9999999):
             continue
 
     if ((piaoshu2 - piaoshu1 > 1) and (int(giftcount2) - int(giftcount1) < 1)):
+        thefile = open("lock.txt")     #注意！！！！！！！！lock.txt末尾不能用空行
+        while True:
+            buffer = thefile.read(1024 * 8192)
+            if not buffer:
+                break
+            count += buffer.count('\n')
+        thefile.close()
         for c in range(9999999):  # 无限循环
-            x = c % (count - 1)
-            theline = linecache.getline(r'lock.txt', x)  # 从代理ip池中按序挑选一个
+            x = c % (count+1)
+            theline = linecache.getline(r'lock.txt', x+1)  # 从代理ip池中按序挑选一个
             theline = r"http://" + theline[:len(theline) - 1]
             proxies = {"http": theline, "https": "https://127.0.0.1:3128"}
             vote_headers = {

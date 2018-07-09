@@ -94,7 +94,7 @@ down_count = 0
 down_time = ""
 
 count=0
-thefile=open("alive.txt")
+thefile=open("lock.txt")
 while True:
     buffer=thefile.read(1024*8192)
     if not buffer:
@@ -140,10 +140,10 @@ for a in range(9999999):   #无限循环
             count += buffer.count('\n')
         thefile.close()'''
     x = random.randrange(1, count-1)
-    theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
+    theline = linecache.getline(r'lock.txt', x)       #从代理ip池中随机挑选一个
 
     #x = a%(count-1)
-    #theline = linecache.getline(r'alive.txt', x)       #从代理ip池中按序挑选一个
+    #theline = linecache.getline(r'lock.txt', x)       #从代理ip池中按序挑选一个
 
     theline = r"http://" + theline[:len(theline)-1]
     randomc = getsessionid()   #随机生成session id
