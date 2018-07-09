@@ -137,7 +137,7 @@ for a in range(9999999):   #无限循环
         count += buffer.count('\n')
     thefile.close()
     linecache.clearcache()
-    #x = random.randrange(1, count-1)
+    #x = random.randrange(1,count)
     #theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
 
     x = a%(count+1)

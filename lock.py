@@ -47,13 +47,13 @@ for xxx in range(9999999):
         theline = r"http://" + theline[:len(theline) - 1]
         proxies = {"http": theline, "https": "https://127.0.0.1:3128"}
         try:
-            response_real = requests.get(real_url, headers=real_headers, timeout=2)
+            response_real = requests.get(real_url, proxies=proxies,headers=real_headers, timeout=2)
             html1 = response_real.text
             page = etree.HTML(html1.lower())
             piaoshu1 = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
             giftcount1 = re.sub("\D", "", page.xpath("/html/body/div[1]/div[5]/div[4]/span[2]")[0].text)
             print("%s第%d轮第一次检测票数为%d，礼物积分为%s，当前时间为%s"%(id,xxx+1,piaoshu1,giftcount1,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
-            time.sleep(180)
+            time.sleep(120)
             break
         except:
             continue
@@ -63,7 +63,7 @@ for xxx in range(9999999):
         theline = r"http://" + theline[:len(theline) - 1]
         proxies = {"http": theline, "https": "https://127.0.0.1:3128"}
         try:
-            response_real = requests.get(real_url, headers=real_headers, timeout=2)
+            response_real = requests.get(real_url, proxies=proxies,headers=real_headers, timeout=2)
             html1 = response_real.text
             page = etree.HTML(html1.lower())
             piaoshu2 = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
