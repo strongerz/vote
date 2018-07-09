@@ -128,6 +128,7 @@ ua = ["Mozilla/5.0 (iPhone; CPU iPhone OS 10_3_3 like Mac OS X) AppleWebKit/603.
 
 
 for a in range(9999999):   #无限循环
+    count = 0
     thefile = open("alive.txt")    #注意！！！！！！！！alive.txt末尾不能用空行
     while True:
         buffer = thefile.read(1024 * 8192)
@@ -135,6 +136,7 @@ for a in range(9999999):   #无限循环
             break
         count += buffer.count('\n')
     thefile.close()
+    linecache.clearcache()
     #x = random.randrange(1, count-1)
     #theline = linecache.getline(r'alive.txt', x)       #从代理ip池中随机挑选一个
 
@@ -200,6 +202,7 @@ for a in range(9999999):   #无限循环
         'Accept-Encoding': 'gzip, deflate',
         'Connection': 'keep-alive'
     }
+
     try:
         response_view = requests.post(view_url, proxies=proxies,headers=view_headers,data="limit=1",timeout = 2)   #模拟打开页面
         response_real = requests.get(real_url, proxies=proxies,headers=real_headers, timeout=2)

@@ -74,6 +74,7 @@ for xxx in range(9999999):
             continue
 
     if ((piaoshu2 - piaoshu1 > 1) and (int(giftcount2) - int(giftcount1) < 1)):
+        count = 0
         thefile = open("lock.txt")     #注意！！！！！！！！lock.txt末尾不能用空行
         while True:
             buffer = thefile.read(1024 * 8192)
@@ -81,6 +82,7 @@ for xxx in range(9999999):
                 break
             count += buffer.count('\n')
         thefile.close()
+        linecache.clearcache()
         for c in range(9999999):  # 无限循环
             x = c % (count+1)
             theline = linecache.getline(r'lock.txt', x+1)  # 从代理ip池中按序挑选一个
