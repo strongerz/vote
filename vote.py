@@ -203,6 +203,7 @@ for a in range(9999999):   #无限循环
         'Accept-Encoding': 'gzip, deflate',
         'Connection': 'keep-alive'
     }
+    print(theline)
     try:
         response_view = requests.post(view_url, proxies=proxies,headers=view_headers,data="limit=1",timeout = 2)   #模拟打开页面
         response_real = requests.get(real_url, proxies=proxies,headers=real_headers, timeout=2)
@@ -210,7 +211,6 @@ for a in range(9999999):   #无限循环
         response_vote = requests.post(vote_url, proxies=proxies, headers=vote_headers, data="latitude=0&longitude=0&verify=0",timeout = 2)   #模拟投票
         html2 = response_vote.text
         code = html2.split(",")[0].split(":")[1][1:2]  # 获取返回码，成功为1，失败为0
-        print(theline)
     except:
         continue
     else:
