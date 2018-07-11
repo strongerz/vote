@@ -14,6 +14,7 @@ piaoshu = 0
 down_count = 0
 down_time = ""
 vote_count = 0
+weigui_count = 0
 
 count=0
 thefile=open("lock.txt")
@@ -53,7 +54,7 @@ for xxx in range(9999999):
             piaoshu1 = int(page.xpath("/html/body/div[1]/div[5]/div[2]/span[2]")[0].text)
             giftcount1 = re.sub("\D", "", page.xpath("/html/body/div[1]/div[5]/div[4]/span[2]")[0].text)
             print("%s第%d轮第一次检测票数为%d，礼物积分为%s，当前时间为%s"%(id,xxx+1,piaoshu1,giftcount1,datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
-            time.sleep(120)
+            time.sleep(30)
             break
         except:
             continue
@@ -73,7 +74,17 @@ for xxx in range(9999999):
         except:
             continue
 
-    if ((piaoshu2 - piaoshu1 > 1) and (int(giftcount2) - int(giftcount1) < 1)):
+    if ((piaoshu2 - piaoshu1 > 0) and (int(giftcount2) - int(giftcount1) < 1)):
+        weigui_count+=1
+        print("违规%d次"%weigui_count)
+    else:
+        weigui_count=0
+        print("解除违规")
+        continue
+    if(vote_count>30):
+        print("lock池太弱")
+        break
+    if(weigui_count>2):
         count = 0
         thefile = open("lock.txt")     #注意！！！！！！！！lock.txt末尾不能用空行
         while True:
@@ -104,7 +115,7 @@ for xxx in range(9999999):
                 'Cookie': cookie
             }
             try:
-                response_vote = requests.post(vote_url, proxies=proxies, headers=vote_headers,data="latitude=0&longitude=0&verify=0", timeout=2)  # 模拟投票
+                response_vote = requests.post(vote_url, proxies=proxies, headers=vote_headers,data=" ", timeout=2)  # 模拟投票
                 html2 = response_vote.text
                 code = html2.split(",")[0].split(":")[1][1:2]  # 获取返回码，成功为1，失败为0
                 print(theline)
@@ -120,6 +131,8 @@ for xxx in range(9999999):
                         str = html2.split(":")[2].split("\"")[1]
                         if ("锁定" in str.encode('utf-8').decode('unicode_escape')):
                             print("%s刷票已被锁定，当前时间为%s，!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" % (id, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+                            vote_count=0
+                            weigui_count=0
                             break
                         else:
                             continue
